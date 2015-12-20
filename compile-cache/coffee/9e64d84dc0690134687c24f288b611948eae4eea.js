@@ -1,0 +1,55 @@
+(function() {
+  var closestPackage, fs, isWindows, path, selectedTest, util;
+
+  fs = require('fs');
+
+  path = require('path');
+
+  util = require('util');
+
+  selectedTest = require('./selected-test');
+
+  isWindows = /^win/.test(process.platform);
+
+  exports.find = function(editor) {
+    var mochaBinary, mochaCommand, root;
+    root = closestPackage(editor.getPath());
+    if (root) {
+      mochaCommand = isWindows ? 'mocha.cmd' : 'mocha';
+      mochaBinary = path.join(root, 'node_modules', '.bin', mochaCommand);
+      if (!fs.existsSync(mochaBinary)) {
+        mochaBinary = 'mocha';
+      }
+      return {
+        root: root,
+        test: path.relative(root, editor.getPath()),
+        grep: selectedTest.fromEditor(editor),
+        mocha: mochaBinary
+      };
+    } else {
+      return {
+        root: path.dirname(editor.getPath()),
+        test: path.basename(editor.getPath()),
+        grep: selectedTest.fromEditor(editor),
+        mocha: 'mocha'
+      };
+    }
+  };
+
+  closestPackage = function(folder) {
+    var pkg;
+    pkg = path.join(folder, 'package.json');
+    if (fs.existsSync(pkg)) {
+      return folder;
+    } else if (folder === '/') {
+      return null;
+    } else {
+      return closestPackage(path.dirname(folder));
+    }
+  };
+
+}).call(this);
+
+//# sourceMappingURL=data:application/json;base64,ewogICJ2ZXJzaW9uIjogMywKICAiZmlsZSI6ICIiLAogICJzb3VyY2VSb290IjogIiIsCiAgInNvdXJjZXMiOiBbCiAgICAiL2hvbWUvaXJhYXN0YS8uYXRvbS9wYWNrYWdlcy9tb2NoYS10ZXN0LXJ1bm5lci9saWIvY29udGV4dC5jb2ZmZWUiCiAgXSwKICAibmFtZXMiOiBbXSwKICAibWFwcGluZ3MiOiAiQUFBQTtBQUFBLE1BQUEsdURBQUE7O0FBQUEsRUFBQSxFQUFBLEdBQU8sT0FBQSxDQUFRLElBQVIsQ0FBUCxDQUFBOztBQUFBLEVBQ0EsSUFBQSxHQUFPLE9BQUEsQ0FBUSxNQUFSLENBRFAsQ0FBQTs7QUFBQSxFQUVBLElBQUEsR0FBTyxPQUFBLENBQVEsTUFBUixDQUZQLENBQUE7O0FBQUEsRUFHQSxZQUFBLEdBQWUsT0FBQSxDQUFRLGlCQUFSLENBSGYsQ0FBQTs7QUFBQSxFQUlBLFNBQUEsR0FBWSxNQUFVLENBQUMsSUFBWCxDQUFnQixPQUFPLENBQUMsUUFBeEIsQ0FKWixDQUFBOztBQUFBLEVBTUEsT0FBTyxDQUFDLElBQVIsR0FBZSxTQUFDLE1BQUQsR0FBQTtBQUNiLFFBQUEsK0JBQUE7QUFBQSxJQUFBLElBQUEsR0FBTyxjQUFBLENBQWUsTUFBTSxDQUFDLE9BQVAsQ0FBQSxDQUFmLENBQVAsQ0FBQTtBQUNBLElBQUEsSUFBRyxJQUFIO0FBQ0UsTUFBQSxZQUFBLEdBQWtCLFNBQUgsR0FBa0IsV0FBbEIsR0FBbUMsT0FBbEQsQ0FBQTtBQUFBLE1BQ0EsV0FBQSxHQUFjLElBQUksQ0FBQyxJQUFMLENBQVUsSUFBVixFQUFnQixjQUFoQixFQUFnQyxNQUFoQyxFQUF3QyxZQUF4QyxDQURkLENBQUE7QUFFQSxNQUFBLElBQUcsQ0FBQSxFQUFNLENBQUMsVUFBSCxDQUFjLFdBQWQsQ0FBUDtBQUNFLFFBQUEsV0FBQSxHQUFjLE9BQWQsQ0FERjtPQUZBO2FBSUE7QUFBQSxRQUFBLElBQUEsRUFBTSxJQUFOO0FBQUEsUUFDQSxJQUFBLEVBQU0sSUFBSSxDQUFDLFFBQUwsQ0FBYyxJQUFkLEVBQW9CLE1BQU0sQ0FBQyxPQUFQLENBQUEsQ0FBcEIsQ0FETjtBQUFBLFFBRUEsSUFBQSxFQUFNLFlBQVksQ0FBQyxVQUFiLENBQXdCLE1BQXhCLENBRk47QUFBQSxRQUdBLEtBQUEsRUFBTyxXQUhQO1FBTEY7S0FBQSxNQUFBO2FBVUU7QUFBQSxRQUFBLElBQUEsRUFBTSxJQUFJLENBQUMsT0FBTCxDQUFhLE1BQU0sQ0FBQyxPQUFQLENBQUEsQ0FBYixDQUFOO0FBQUEsUUFDQSxJQUFBLEVBQU0sSUFBSSxDQUFDLFFBQUwsQ0FBYyxNQUFNLENBQUMsT0FBUCxDQUFBLENBQWQsQ0FETjtBQUFBLFFBRUEsSUFBQSxFQUFNLFlBQVksQ0FBQyxVQUFiLENBQXdCLE1BQXhCLENBRk47QUFBQSxRQUdBLEtBQUEsRUFBTyxPQUhQO1FBVkY7S0FGYTtFQUFBLENBTmYsQ0FBQTs7QUFBQSxFQXVCQSxjQUFBLEdBQWlCLFNBQUMsTUFBRCxHQUFBO0FBQ2YsUUFBQSxHQUFBO0FBQUEsSUFBQSxHQUFBLEdBQU0sSUFBSSxDQUFDLElBQUwsQ0FBVSxNQUFWLEVBQWtCLGNBQWxCLENBQU4sQ0FBQTtBQUNBLElBQUEsSUFBRyxFQUFFLENBQUMsVUFBSCxDQUFjLEdBQWQsQ0FBSDthQUNFLE9BREY7S0FBQSxNQUVLLElBQUcsTUFBQSxLQUFVLEdBQWI7YUFDSCxLQURHO0tBQUEsTUFBQTthQUdILGNBQUEsQ0FBZSxJQUFJLENBQUMsT0FBTCxDQUFhLE1BQWIsQ0FBZixFQUhHO0tBSlU7RUFBQSxDQXZCakIsQ0FBQTtBQUFBIgp9
+
+//# sourceURL=/home/iraasta/.atom/packages/mocha-test-runner/lib/context.coffee

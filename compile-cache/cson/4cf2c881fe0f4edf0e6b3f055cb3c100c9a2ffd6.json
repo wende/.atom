@@ -1,0 +1,1 @@
+{"atom-text-editor:not(mini).autocomplete-active":{"tab":"unset!","enter":"autocomplete-plus:confirm"},".workspace":{"ctrl-alt-s":"lint:toggle","ctrl-alt-m":"lint:toggle-violation-metadata"},".editor":{"ctrl-alt-[":"lint:move-to-previous-violation","ctrl-alt-]":"lint:move-to-next-violation","ctrl-space":"autocomplete-plus:toggle"}}

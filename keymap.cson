@@ -1,0 +1,5 @@
+'.editor':
+  'alt-=' : "layout-manager:enlarge-active-pane"
+  'alt--' : "layout-manager:shrink-active-pane"
+'.workspace':
+  'ctrl-alt-shift-t' : "term:open-split-bottom"

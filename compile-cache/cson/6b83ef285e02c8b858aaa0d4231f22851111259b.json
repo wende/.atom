@@ -1,0 +1,1 @@
+{".platform-darwin":{"ctrl-alt-.":"term:open-split-right","ctrl-shift-alt-.":"term:open-split-left","ctrl-alt-,":"term:open-split-down","shift-ctrl-alt-,":"term:open-split-up"},".platform-win32, .platform-linux":{"ctrl-alt-.":"term:open-split-right","shift-ctrl-alt-.":"term:open-split-left","ctrl-alt-,":"term:open-split-down","shift-ctrl-alt-,":"term:open-split-up"}}

@@ -1,0 +1,66 @@
+(function() {
+  var DO, DOEND, END, FN, Point, Range, decoration, _ref;
+
+  DO = "do";
+
+  END = "end";
+
+  FN = "fn";
+
+  DOEND = /(do|end|fn)/;
+
+  _ref = require("atom"), Range = _ref.Range, Point = _ref.Point;
+
+  decoration = null;
+
+  module.exports.handleMatch = function(editor, e) {
+    var bufferPos, counter, fromBeginning, lastLineNo, toEnd, word;
+    if (decoration != null) {
+      decoration.destroy();
+    }
+    lastLineNo = editor.buffer.lines.length - 1;
+    bufferPos = e.cursor.getBufferPosition().toArray();
+    console.log(bufferPos);
+    fromBeginning = new Range([0, 0], bufferPos);
+    toEnd = new Range(bufferPos, [lastLineNo, 0]);
+    word = editor.getWordUnderCursor();
+    counter = 0;
+    if (word === DO) {
+      editor.scanInBufferRange(DOEND, toEnd, function(_arg) {
+        var m, marker, r, _ref1;
+        _ref1 = _arg != null ? _arg : match, r = _ref1.range, m = _ref1.matchText;
+        console.log(match);
+        if (m === DO || m === FN) {
+          counter++;
+        }
+        if (m === END && counter) {
+          return counter--;
+        } else {
+          marker = editor.markBufferRange(r);
+          console.log(marker);
+          return decoration = editor.decorateMarker(marker, {
+            type: 'highlight',
+            "class": 'selection'
+          });
+        }
+      });
+    }
+    if (word === END) {
+      return editor.backwardsScanInBufferRange(DOEND, fromBeginning, function(m) {
+        if (m === END) {
+          counter++;
+        }
+        if ((m === DO || m === FN) && counter) {
+          return counter--;
+        } else {
+          return console.log("found");
+        }
+      });
+    }
+  };
+
+}).call(this);
+
+//# sourceMappingURL=data:application/json;base64,ewogICJ2ZXJzaW9uIjogMywKICAiZmlsZSI6ICIiLAogICJzb3VyY2VSb290IjogIiIsCiAgInNvdXJjZXMiOiBbCiAgICAiL2hvbWUvaXJhYXN0YS8uYXRvbS9wYWNrYWdlcy9hdXRvY29tcGxldGUtZWxpeGlyL2xpYi9hbGNoZW1pZGUvZG9lbmRtYXRjaGVyLmNvZmZlZSIKICBdLAogICJuYW1lcyI6IFtdLAogICJtYXBwaW5ncyI6ICJBQUFBO0FBQUEsTUFBQSxrREFBQTs7QUFBQSxFQUFBLEVBQUEsR0FBSyxJQUFMLENBQUE7O0FBQUEsRUFDQSxHQUFBLEdBQU0sS0FETixDQUFBOztBQUFBLEVBRUEsRUFBQSxHQUFLLElBRkwsQ0FBQTs7QUFBQSxFQUdBLEtBQUEsR0FBUSxhQUhSLENBQUE7O0FBQUEsRUFJQSxPQUFpQixPQUFBLENBQVEsTUFBUixDQUFqQixFQUFDLGFBQUEsS0FBRCxFQUFRLGFBQUEsS0FKUixDQUFBOztBQUFBLEVBS0EsVUFBQSxHQUFhLElBTGIsQ0FBQTs7QUFBQSxFQU9BLE1BQU0sQ0FBQyxPQUFPLENBQUMsV0FBZixHQUE2QixTQUFDLE1BQUQsRUFBUyxDQUFULEdBQUE7QUFDM0IsUUFBQSwwREFBQTs7TUFBQSxVQUFVLENBQUUsT0FBWixDQUFBO0tBQUE7QUFBQSxJQUNBLFVBQUEsR0FBYSxNQUFNLENBQUMsTUFBTSxDQUFDLEtBQUssQ0FBQyxNQUFwQixHQUE2QixDQUQxQyxDQUFBO0FBQUEsSUFFQSxTQUFBLEdBQVksQ0FBQyxDQUFDLE1BQU0sQ0FBQyxpQkFBVCxDQUFBLENBQTRCLENBQUMsT0FBN0IsQ0FBQSxDQUZaLENBQUE7QUFBQSxJQUdBLE9BQU8sQ0FBQyxHQUFSLENBQVksU0FBWixDQUhBLENBQUE7QUFBQSxJQUlBLGFBQUEsR0FBb0IsSUFBQSxLQUFBLENBQU0sQ0FBQyxDQUFELEVBQUcsQ0FBSCxDQUFOLEVBQWEsU0FBYixDQUpwQixDQUFBO0FBQUEsSUFLQSxLQUFBLEdBQW9CLElBQUEsS0FBQSxDQUFNLFNBQU4sRUFBaUIsQ0FBQyxVQUFELEVBQWEsQ0FBYixDQUFqQixDQUxwQixDQUFBO0FBQUEsSUFPQSxJQUFBLEdBQU8sTUFBTSxDQUFDLGtCQUFQLENBQUEsQ0FQUCxDQUFBO0FBQUEsSUFRQSxPQUFBLEdBQVUsQ0FSVixDQUFBO0FBU0EsSUFBQSxJQUFHLElBQUEsS0FBUSxFQUFYO0FBQ0UsTUFBQSxNQUFNLENBQUMsaUJBQVAsQ0FBeUIsS0FBekIsRUFBZ0MsS0FBaEMsRUFBdUMsU0FBQyxJQUFELEdBQUE7QUFDckMsWUFBQSxtQkFBQTtBQUFBLCtCQURzQyxPQUE0QixPQUFwQixVQUFQLE9BQXFCLFVBQVgsU0FDakQsQ0FBQTtBQUFBLFFBQUEsT0FBTyxDQUFDLEdBQVIsQ0FBWSxLQUFaLENBQUEsQ0FBQTtBQUNBLFFBQUEsSUFBRyxDQUFBLEtBQUssRUFBTCxJQUFXLENBQUEsS0FBSyxFQUFuQjtBQUEyQixVQUFBLE9BQUEsRUFBQSxDQUEzQjtTQURBO0FBRUEsUUFBQSxJQUFHLENBQUEsS0FBSyxHQUFMLElBQVksT0FBZjtpQkFBNEIsT0FBQSxHQUE1QjtTQUFBLE1BQUE7QUFFRSxVQUFBLE1BQUEsR0FBUyxNQUFNLENBQUMsZUFBUCxDQUF1QixDQUF2QixDQUFULENBQUE7QUFBQSxVQUNBLE9BQU8sQ0FBQyxHQUFSLENBQVksTUFBWixDQURBLENBQUE7aUJBRUEsVUFBQSxHQUFhLE1BQU0sQ0FBQyxjQUFQLENBQXNCLE1BQXRCLEVBQThCO0FBQUEsWUFBQyxJQUFBLEVBQU0sV0FBUDtBQUFBLFlBQW9CLE9BQUEsRUFBTyxXQUEzQjtXQUE5QixFQUpmO1NBSHFDO01BQUEsQ0FBdkMsQ0FBQSxDQURGO0tBVEE7QUFrQkEsSUFBQSxJQUFHLElBQUEsS0FBUSxHQUFYO2FBQ0UsTUFBTSxDQUFDLDBCQUFQLENBQWtDLEtBQWxDLEVBQXlDLGFBQXpDLEVBQXdELFNBQUMsQ0FBRCxHQUFBO0FBQ3RELFFBQUEsSUFBRyxDQUFBLEtBQUssR0FBUjtBQUFpQixVQUFBLE9BQUEsRUFBQSxDQUFqQjtTQUFBO0FBQ0EsUUFBQSxJQUFHLENBQUMsQ0FBQSxLQUFLLEVBQUwsSUFBVyxDQUFBLEtBQUssRUFBakIsQ0FBQSxJQUF3QixPQUEzQjtpQkFBd0MsT0FBQSxHQUF4QztTQUFBLE1BQUE7aUJBRUUsT0FBTyxDQUFDLEdBQVIsQ0FBWSxPQUFaLEVBRkY7U0FGc0Q7TUFBQSxDQUF4RCxFQURGO0tBbkIyQjtFQUFBLENBUDdCLENBQUE7QUFBQSIKfQ==
+
+//# sourceURL=/home/iraasta/.atom/packages/autocomplete-elixir/lib/alchemide/doendmatcher.coffee

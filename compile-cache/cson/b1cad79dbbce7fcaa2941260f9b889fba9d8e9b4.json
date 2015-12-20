@@ -1,0 +1,1 @@
+{".source.elixir":{"do":{"prefix":"do","body":"do\n\t $1 \nend"},"fn":{"prefix":"fn","body":"fn ${1:arg} -> \n\t $2 \nend"},"try-catch":{"prefix":"try","body":"try\n\t$1\ncatch\t\n${2:_},${3:_} -> $4 \nend"}}}

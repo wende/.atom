@@ -1,0 +1,40 @@
+{
+  "name": "linter-erlc",
+  "version": "0.3.0",
+  "linter-package": true,
+  "main": "./lib/init",
+  "description": "Bare Minimum Erlang lint package",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AtomLinter/linter-erlc"
+  },
+  "license": "MIT",
+  "engines": {
+    "atom": ">0.50.0"
+  },
+  "dependencies": {},
+  "readme": "# linter-erlc\n\nThis linter plugin for [Linter](https://github.com/AtomLinter/Linter) provides an interface to erlc. It will be used with files that have the \"source.erlang\" syntax.\n\n\n## Installation\nLinter package must be installed in order to use this plugin. If Linter is not installed, please follow the instructions [here](https://github.com/AtomLinter/Linter).\n\n### Plugin installation\n```\n$ apm install linter-erlc\n```\n\n## Settings\nYou can configure linter-elixirc by editing ~/.atom/config.cson (choose Open Your Config in Atom menu):\n\n```\n'linter-elixirc':\n  'erlcExecutablePath': null #erlc path. run 'which erlc' to find the path\n  'includeDirs': 'includes,other/paths' #comma seperated list of paths added with the -I flag\n\t'pa': '~/.ebin' #comma seperated list of paths added with the -pa flag.\n```\n",
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/AtomLinter/linter-erlc/issues"
+  },
+  "homepage": "https://github.com/AtomLinter/linter-erlc",
+  "_id": "linter-erlc@0.3.0",
+  "_shasum": "012e5641a055eb1a39711f50b1ecd203edd04bb7",
+  "_resolved": "file:../d-11553-24220-10rhi29/package.tgz",
+  "_from": "../d-11553-24220-10rhi29/package.tgz",
+  "_atomModuleCache": {
+    "version": 1,
+    "dependencies": [],
+    "extensions": {
+      ".coffee": [
+        "lib/init.coffee",
+        "lib/linter-erlc.coffee"
+      ],
+      ".json": [
+        "package.json"
+      ]
+    },
+    "folders": []
+  }
+}

@@ -1,0 +1,1 @@
+{"atom-text-editor:not(mini).autocomplete-active":{"tab":"unset!","enter":"autocomplete-plus:confirm","up":"unset!","down":"unset!","ctrl-p":"autocomplete-plus:select-previous","ctrl-n":"autocomplete-plus:select-next"}}
